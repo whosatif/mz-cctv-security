@@ -1375,17 +1375,21 @@ section {
 }
 
 .brand-card {
-  padding: 24px 20px;
+  padding: 22px 18px;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s ease;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
 }
 
 .brand-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.1), 0 0 0 1px var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -6px rgba(15, 23, 42, 0.09), 0 0 0 1.5px var(--primary);
+  border-color: transparent;
 }
 
 .brand-top {
@@ -1393,45 +1397,24 @@ section {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
+  gap: 8px;
 }
 
-.brand-logo-badge {
-  display: inline-flex;
-  flex-direction: column;
+.brand-logo-frame {
+  background: #ffffff;
+  padding: 5px 9px;
   border-radius: 8px;
-  padding: 4px 10px;
-  color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: inline-flex;
+  align-items: center;
 }
 
-.brand-hikvision {
-  background: linear-gradient(135deg, #b91c1c, #dc2626);
-}
-
-.brand-dahua {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
-}
-
-.brand-unv {
-  background: linear-gradient(135deg, #0f766e, #0d9488);
-}
-
-.brand-cpplus {
-  background: linear-gradient(135deg, #c2410c, #ea580c);
-}
-
-.brand-title-badge {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  line-height: 1.1;
-}
-
-.brand-rank {
-  font-size: 0.6rem;
-  font-weight: 700;
-  opacity: 0.88;
-  letter-spacing: 0.04em;
+.brand-logo-svg {
+  height: 28px;
+  width: auto;
+  max-width: 140px;
+  display: block;
 }
 
 .brand-auth-pill {
@@ -1442,6 +1425,7 @@ section {
   padding: 3px 8px;
   border-radius: var(--radius-full);
   border: 1px solid rgba(16, 185, 129, 0.25);
+  white-space: nowrap;
 }
 
 .brand-name {
@@ -1449,56 +1433,46 @@ section {
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-title);
-  margin-bottom: 8px;
-  line-height: 1.25;
+  margin-bottom: 12px;
+  line-height: 1.2;
 }
 
-.brand-desc {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 14px;
-}
-
-.brand-tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 16px;
-}
-
-.tech-tag {
+.brand-models-label {
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--primary);
-  background: var(--primary-light);
-  padding: 3px 8px;
-  border-radius: 5px;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 }
 
-.brand-features-list {
+.brand-models-list {
   list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 6px;
   flex-grow: 1;
 }
 
-.brand-features-list li {
-  position: relative;
-  padding-left: 18px;
-  font-size: 0.78rem;
+.brand-models-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--text-title);
-  line-height: 1.4;
+  padding: 6px 9px;
+  background: rgba(248, 250, 252, 0.95);
+  border-radius: 6px;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  line-height: 1.3;
 }
 
-.brand-features-list li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--accent-green);
-  font-weight: 800;
+.brand-models-list li .cam-bullet {
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 .brand-footer {
@@ -1506,15 +1480,17 @@ section {
 }
 
 .brand-cta {
-  font-size: 0.8rem;
+  font-size: 0.825rem;
   padding: 9px 12px;
+  font-weight: 700;
+  border-radius: 8px;
 }
 
 /* --------------------------------------------------------------------------
-   11. INTEGRATED SMART SECURITY SOLUTIONS (BIOMETRIC, FIRE ALARM, INTRUSION, INTERCOM)
+   11. INTEGRATED SMART SECURITY SOLUTIONS (SLEEK COMPACT CARDS)
    -------------------------------------------------------------------------- */
 .solutions-section {
-  padding: 50px 0;
+  padding: 48px 0;
 }
 
 .solutions-grid {
@@ -1527,19 +1503,23 @@ section {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.92);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
 }
 
 .solution-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.1), 0 0 0 1px var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -6px rgba(15, 23, 42, 0.09), 0 0 0 1.5px var(--primary);
+  border-color: transparent;
 }
 
 .solution-img-wrap {
   position: relative;
   width: 100%;
-  height: 190px;
+  height: 160px;
   overflow: hidden;
   background: #f1f5f9;
 }
@@ -1548,7 +1528,7 @@ section {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.35s ease;
 }
 
 .solution-card:hover .solution-img {
@@ -1561,33 +1541,33 @@ section {
   left: 10px;
   font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 0.05em;
-  padding: 4px 10px;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
   border-radius: var(--radius-full);
   color: #ffffff;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .badge-access {
-  background: rgba(2, 132, 199, 0.92);
+  background: rgba(2, 132, 199, 0.94);
 }
 
 .badge-fire {
-  background: rgba(220, 38, 38, 0.92);
+  background: rgba(220, 38, 38, 0.94);
 }
 
 .badge-intrusion {
-  background: rgba(217, 119, 6, 0.92);
+  background: rgba(217, 119, 6, 0.94);
 }
 
 .badge-intercom {
-  background: rgba(13, 148, 136, 0.92);
+  background: rgba(13, 148, 136, 0.94);
 }
 
 .solution-body {
-  padding: 20px 18px;
+  padding: 16px 16px 18px 16px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -1595,60 +1575,41 @@ section {
 
 .solution-title {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-title);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.25;
 }
 
-.solution-desc {
-  font-size: 0.8rem;
+.solution-brief {
+  font-size: 0.78rem;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.45;
   margin-bottom: 12px;
 }
 
-.solution-tags {
+.solution-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  flex-grow: 1;
+  align-content: flex-start;
 }
 
-.solution-tags span {
-  font-size: 0.66rem;
+.solution-chip {
+  font-size: 0.68rem;
   font-weight: 700;
   color: #0f172a;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  padding: 2px 7px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 5px;
 }
 
-.solution-bullets {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  margin-bottom: 18px;
-  flex-grow: 1;
-}
-
-.solution-bullets li {
-  position: relative;
-  padding-left: 18px;
-  font-size: 0.775rem;
-  color: var(--text-title);
-  line-height: 1.35;
-}
-
-.solution-bullets li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--accent-green);
-  font-weight: 800;
+.solution-footer {
+  margin-top: auto;
 }
 
 /* --------------------------------------------------------------------------
