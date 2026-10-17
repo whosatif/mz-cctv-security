@@ -241,156 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* --------------------------------------------------------------------------
-     5. DYNAMIC COST CALCULATOR
-     -------------------------------------------------------------------------- */
-  const camSlider = document.getElementById('camSlider');
-  const camCountDisplay = document.getElementById('camCountDisplay');
-  const calcResBtns = document.querySelectorAll('#calcRes .pill-btn');
-  const calcStorageBtns = document.querySelectorAll('#calcStorage .pill-btn');
-
-  const addonAudio = document.getElementById('addonAudio');
-  const addonUps = document.getElementById('addonUps');
-  const addonConceal = document.getElementById('addonConceal');
-
-  const calcPriceDisplay = document.getElementById('calcPriceDisplay');
-  const summaryCams = document.getElementById('summaryCams');
-  const summaryCamsPrice = document.getElementById('summaryCamsPrice');
-  const summaryNvr = document.getElementById('summaryNvr');
-  const summaryHdd = document.getElementById('summaryHdd');
-  const summaryHddPrice = document.getElementById('summaryHddPrice');
-  const summaryUpgrades = document.getElementById('summaryUpgrades');
-  const summaryUpgradesPrice = document.getElementById('summaryUpgradesPrice');
-  const summaryLaborPrice = document.getElementById('summaryLaborPrice');
-  const bookCalcBtn = document.getElementById('bookCalcBtn');
-
-  const pricing = {
-    res: {
-      '2k': { perCam: 5500, label: '2K Quad HD (4MP)' },
-      '4k': { perCam: 8500, label: '4K Ultra HD (8MP)' },
-      'ai4k': { perCam: 11500, label: '4K AI ColorVu Night' }
-    },
-    storage: {
-      '1tb': { price: 8000, label: '1 TB Storage' },
-      '2tb': { price: 12500, label: '2 TB Storage' },
-      '4tb': { price: 21000, label: '4 TB Storage' }
-    },
-    nvr: {
-      2: { price: 8000, label: '4-Channel Smart NVR Hub' },
-      4: { price: 8000, label: '4-Channel Smart NVR Hub' },
-      6: { price: 13000, label: '8-Channel 4K AI NVR Hub' },
-      8: { price: 13000, label: '8-Channel 4K AI NVR Hub' },
-      10: { price: 22000, label: '16-Channel Enterprise NVR Hub' },
-      12: { price: 22000, label: '16-Channel Enterprise NVR Hub' },
-      14: { price: 22000, label: '16-Channel Enterprise NVR Hub' },
-      16: { price: 22000, label: '16-Channel Enterprise NVR Hub' }
-    }
-  };
-
-  const calcState = {
-    cameras: 4,
-    res: '4k',
-    storage: '2tb'
-  };
-
-  function updateCalculator() {
-    if (!camSlider) return;
-    const camCount = parseInt(camSlider.value, 10) || 4;
-    calcState.cameras = camCount;
-    if (camCountDisplay) camCountDisplay.textContent = `${camCount} Cameras`;
-
-    const resData = pricing.res[calcState.res] || pricing.res['4k'];
-    const camTotal = camCount * resData.perCam;
-
-    const nvrData = pricing.nvr[camCount] || pricing.nvr[16];
-    const hddData = pricing.storage[calcState.storage] || pricing.storage['2tb'];
-
-    let upgradesTotal = 0;
-    const upgradeList = [];
-    if (addonAudio && addonAudio.checked) {
-      upgradesTotal += (camCount * 500);
-      upgradeList.push('Audio');
-    }
-    if (addonUps && addonUps.checked) {
-      upgradesTotal += 4500;
-      upgradeList.push('UPS');
-    }
-    if (addonConceal && addonConceal.checked) {
-      upgradesTotal += (camCount * 700);
-      upgradeList.push('Ducting');
-    }
-
-    const laborTotal = 3000 + (camCount * 1200);
-    const grandTotal = camTotal + nvrData.price + hddData.price + upgradesTotal + laborTotal;
-
-    if (calcPriceDisplay) calcPriceDisplay.textContent = `PKR ${grandTotal.toLocaleString()}`;
-    if (summaryCams) summaryCams.textContent = `${camCount} × ${resData.label}`;
-    if (summaryCamsPrice) summaryCamsPrice.textContent = `PKR ${camTotal.toLocaleString()}`;
-    if (summaryNvr) summaryNvr.textContent = nvrData.label;
-    if (summaryHdd) summaryHdd.textContent = hddData.label;
-    if (summaryHddPrice) summaryHddPrice.textContent = `PKR ${hddData.price.toLocaleString()}`;
-    if (summaryUpgrades) summaryUpgrades.textContent = upgradeList.length > 0 ? upgradeList.join(' + ') : 'None';
-    if (summaryUpgradesPrice) summaryUpgradesPrice.textContent = `PKR ${upgradesTotal.toLocaleString()}`;
-    if (summaryLaborPrice) summaryLaborPrice.textContent = `PKR ${laborTotal.toLocaleString()}`;
-  }
-
-  if (camSlider) {
-    camSlider.addEventListener('input', updateCalculator);
-  }
-
-  calcResBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      calcResBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      calcState.res = btn.getAttribute('data-val') || '4k';
-      updateCalculator();
-    });
-  });
-
-  calcStorageBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      calcStorageBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      calcState.storage = btn.getAttribute('data-val') || '2tb';
-      updateCalculator();
-    });
-  });
-
-  [addonAudio, addonUps, addonConceal].forEach(function (chk) {
-    if (chk) chk.addEventListener('change', updateCalculator);
-  });
-
-  updateCalculator();
-
-  if (bookCalcBtn) {
-    bookCalcBtn.addEventListener('click', function () {
-      const quoteSection = document.getElementById('quote');
-      const camSelect = document.getElementById('cameraCountSelect');
-      const clientNotes = document.getElementById('clientNotes');
-
-      if (camSelect) {
-        for (let i = 0; i < camSelect.options.length; i++) {
-          if (camSelect.options[i].value.startsWith(String(calcState.cameras))) {
-            camSelect.selectedIndex = i;
-            break;
-          }
-        }
-      }
-
-      if (clientNotes) {
-        const estText = calcPriceDisplay ? calcPriceDisplay.textContent : 'Calculated';
-        clientNotes.value = `Calculated Estimate: ${calcState.cameras} Cameras, ${pricing.res[calcState.res].label}, ${pricing.storage[calcState.storage].label} (~${estText}).`;
-      }
-
-      if (quoteSection) {
-        quoteSection.scrollIntoView({ behavior: 'smooth' });
-        const nameInput = document.getElementById('clientName');
-        if (nameInput) setTimeout(() => nameInput.focus(), 400);
-      }
-    });
-  }
-
-  /* --------------------------------------------------------------------------
-     6. ANTI-BYPASS INPUT SANITIZATION & DIRECT WHATSAPP INTEGRATION
+     5. ANTI-BYPASS INPUT SANITIZATION & DIRECT WHATSAPP INTEGRATION
      (Stops script injection, empty bypass, invalid telephone numbers, double-submits)
      -------------------------------------------------------------------------- */
   const quoteForm = document.getElementById('quoteForm');
@@ -402,19 +253,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Allowed whitelist options for select dropdowns to prevent DOM tampering
   const VALID_PROPERTIES = [
-    'Home / Villa',
-    'Apartment',
-    'Office',
-    'Shop / Retail',
-    'Warehouse'
+    'Residential Villa / Home',
+    'Commercial Office',
+    'Retail Store / Shop',
+    'Warehouse / Factory',
+    'Apartment / Flat'
   ];
 
-  const VALID_CAM_OPTIONS = [
-    '2 Cameras',
-    '4 Cameras',
-    '6 Cameras',
-    '8 Cameras',
-    '12+ Cameras'
+  const VALID_SYSTEMS = [
+    'CCTV Surveillance (Hikvision / Dahua / UNV)',
+    'Biometric & Fingerprint Access Control',
+    'Smart Fire & Smoke Alarm Systems',
+    'Intrusion & Perimeter Security Alarms',
+    'Smart Video Intercom & Digital Door Locks',
+    'Complete Integrated Security Package'
   ];
 
   // Robust Text Sanitizer: Removes HTML tags, script delimiters, quotes and control characters
@@ -456,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const rawName = document.getElementById('clientName') ? document.getElementById('clientName').value : '';
       const rawPhone = document.getElementById('clientPhone') ? document.getElementById('clientPhone').value : '';
       const rawProp = document.getElementById('propertyTypeSelect') ? document.getElementById('propertyTypeSelect').value : '';
-      const rawCams = document.getElementById('cameraCountSelect') ? document.getElementById('cameraCountSelect').value : '';
+      const rawSystem = document.getElementById('systemSelect') ? document.getElementById('systemSelect').value : '';
       const rawAddr = document.getElementById('clientAddress') ? document.getElementById('clientAddress').value : '';
       const rawNotes = document.getElementById('clientNotes') ? document.getElementById('clientNotes').value : '';
 
@@ -491,25 +343,25 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       // 3. Dropdown Whitelist Validation
-      const prop = VALID_PROPERTIES.includes(rawProp) ? rawProp : 'Home / Villa';
-      const cams = VALID_CAM_OPTIONS.includes(rawCams) ? rawCams : '4 Cameras';
+      const prop = VALID_PROPERTIES.includes(rawProp) ? rawProp : 'Residential Villa / Home';
+      const system = VALID_SYSTEMS.includes(rawSystem) ? rawSystem : 'CCTV Surveillance (Hikvision / Dahua / UNV)';
 
       isSubmitting = true;
 
       // Construct clean, secure WhatsApp message text
       const waMessage = 
-        `🚨 *NEW CCTV INSTALLATION INQUIRY*\n` +
+        `🚨 *NEW SECURITY SYSTEM INQUIRY*\n` +
         `━━━━━━━━━━━━━━━━━━━━━\n` +
         `👤 *Name:* ${name}\n` +
         `📞 *Contact:* ${phone}\n` +
+        `🛠️ *System Needed:* ${system}\n` +
         `🏠 *Property:* ${prop}\n` +
-        `📹 *Cameras Needed:* ${cams}\n` +
         `📍 *Location:* ${addr || 'Not specified'}\n` +
-        `📝 *Notes/Requirements:* ${notes || 'None provided'}\n` +
+        `📝 *Requirements/Notes:* ${notes || 'None provided'}\n` +
         `━━━━━━━━━━━━━━━━━━━━━\n` +
-        `_Sent from MZ Smart CCTV Website_`;
+        `_Sent from MZ Smart CCTV & Security Website_`;
 
-      const waUrl = `https://wa.me/923074588344?text=${encodeURIComponent(waMessage)}`;
+      const waUrl = `https://wa.me/923052666996?text=${encodeURIComponent(waMessage)}`;
 
       // Visual feedback on button
       const origHtml = submitQuoteBtn ? submitQuoteBtn.innerHTML : '';
@@ -556,13 +408,22 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* --------------------------------------------------------------------------
-   7. GLOBAL PRESELECTION HELPERS (SANITIZED)
+   6. GLOBAL PRESELECTION HELPERS (SANITIZED)
    -------------------------------------------------------------------------- */
 window.preselectService = function (serviceName) {
   'use strict';
-  const cleanName = String(serviceName || '').replace(/[<>'"\\;`]/g, '').trim().slice(0, 40);
+  const cleanName = String(serviceName || '').replace(/[<>'"\\;`]/g, '').trim().slice(0, 80);
   const quoteSection = document.getElementById('quote');
+  const systemSelect = document.getElementById('systemSelect');
   const clientNotes = document.getElementById('clientNotes');
+  if (systemSelect) {
+    for (let i = 0; i < systemSelect.options.length; i++) {
+      if (systemSelect.options[i].value.toLowerCase().includes(cleanName.toLowerCase())) {
+        systemSelect.selectedIndex = i;
+        break;
+      }
+    }
+  }
   if (clientNotes) clientNotes.value = `Interested in ${cleanName} security installation.`;
   if (quoteSection) {
     quoteSection.scrollIntoView({ behavior: 'smooth' });
@@ -571,15 +432,5 @@ window.preselectService = function (serviceName) {
   }
 };
 
-window.preselectPackage = function (packageName) {
-  'use strict';
-  const cleanPkg = String(packageName || '').replace(/[<>'"\\;`]/g, '').trim().slice(0, 40);
-  const quoteSection = document.getElementById('quote');
-  const clientNotes = document.getElementById('clientNotes');
-  if (clientNotes) clientNotes.value = `Selected Package: ${cleanPkg}. Please confirm survey timing.`;
-  if (quoteSection) {
-    quoteSection.scrollIntoView({ behavior: 'smooth' });
-    const nameInput = document.getElementById('clientName');
-    if (nameInput) setTimeout(() => nameInput.focus(), 400);
-  }
-};
+window.preselectPackage = window.preselectService;
+
